@@ -6,7 +6,12 @@
     "strict": true
   },
   "tasks": {
-    "build": "rm -rf ./secrets-cli && deno compile --allow-read --allow-write --allow-env --allow-run --output ./secrets-cli src/index.ts"
+    "build": "rm -rf ./secrets-cli && deno compile --allow-read --allow-write --allow-env --allow-run --output ./secrets-cli src/index.ts",
+    "build:target": "deno compile --allow-read --allow-write --allow-env --allow-run",
+    "build:linux": "deno task build:target --target x86_64-unknown-linux-gnu --output ./secrets-cli-linux src/index.ts",
+    "build:macos": "deno task build:target --target x86_64-apple-darwin --output ./secrets-cli-macos src/index.ts",
+    "build:windows": "deno task build:target --target x86_64-pc-windows-msvc --output ./secrets-cli-windows.exe src/index.ts",
+    "build:all": "deno task build:linux && deno task build:macos && deno task build:windows"
   },
   "lint": {
     "rules": {
