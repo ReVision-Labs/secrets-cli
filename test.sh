@@ -86,14 +86,11 @@ test_decrypt() {
             if [ "$expected" = "success" ]; then
                 echo -e "${GREEN}✓ $key can decrypt $file (expected)${NC}"
             else
-                echo "Decrypted file path: $decrypted_file"
                 echo -e "${RED}✗ $key should not be able to decrypt $file${NC}"
-                # rm -f "$decrypted_file"
                 exit 1
             fi
         else
             echo -e "${RED}✗ Decrypted content does not match original file${NC}"
-            rm -f "$decrypted_file"
             exit 1
         fi
     else
@@ -152,9 +149,11 @@ test_key_removal() {
         echo -e "${GREEN}✓ Removed key cannot be used${NC}"
     else
         echo -e "${RED}✗ Removed key can still be used${NC}"
-        rm -f ".env.removed.test"
         exit 1
     fi
+
+    # Clean up
+    rm -f ".env.removed.test"
 }
 
 # Run the new tests
@@ -216,15 +215,13 @@ test_key_rotation() {
     # Verify removed key cannot decrypt new file
     if ! ../secrets-cli decrypt --file "${file}.new.enc" --key-file "${remove_key}.txt.backup" --output "${file}.should.fail" 2>/dev/null; then
         echo -e "${GREEN}✓ Removed key cannot decrypt new file (expected)${NC}"
-        rm -f "${file}.should.fail" 2>/dev/null
     else
         echo -e "${RED}✗ Removed key can still decrypt new file (unexpected)${NC}"
-        rm -f "${file}.should.fail"
         exit 1
     fi
     
     # Cleanup
-    rm -f "${file}.enc.backup" "${remove_key}.txt.backup" "${file}.restored" "${file}.new.enc" "${file}.new.decrypted"
+    rm -f "${file}.enc.backup" "${remove_key}.txt.backup" "${file}.restored" "${file}.new.enc" "${file}.new.decrypted" "${file}.should.fail"
 }
 
 # Run the key rotation test

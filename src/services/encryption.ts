@@ -71,8 +71,7 @@ export const decryptCommand = command({
 
       Deno.writeTextFileSync(decryptedFilePath, output);
 
-      console.log(`Decrypted ${file}`);
-      console.log(`Decrypted file: ${decryptedFilePath}`);
+      console.log(`Decrypted (${file}): ${decryptedFilePath}`);
     } catch (error) {
       console.error(
         'Decryption error:',

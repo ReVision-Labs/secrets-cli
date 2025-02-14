@@ -98,8 +98,8 @@ export async function executeSopsCommand({
   const cmd = new Deno.Command('sops', {
     args: [
       '--config', '.sops.yaml',
-      '--input-type', 'dotenv',
-      '--output-type', 'dotenv',
+      '--input-type', 'binary',
+      '--output-type', 'binary',
       ...args
     ],
     stdout: 'piped',
